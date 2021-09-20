@@ -8,36 +8,22 @@ import React, { Component } from 'react'
  import cartCheckout from './pages/checkout/cart-checkout';
  import { createStructuredSelector } from "reselect";
  import { selectUser } from "../src/redux/user/user.selector"
- import { setCurrentUser } from './redux/user/user.actions.';
+//  import { setCurrentUser } from './redux/user/user.actions.';
+import { checkUserSession } from './redux/user/user.actions.';
  import SigninUp from './pages/Signup/sign-in-Up';
  import { Route ,Switch ,Redirect } from "react-router-dom";
- import { auth , createDocument} from './firebase/firebase.utility';
+//  import { auth , createDocument} from './firebase/firebase.utility';
 
  
  
  class App extends Component {
-
+    
     unsubscribeFromAuth = null;
     
-    componentDidMount(){
+     componentDidMount(){
+        const { checkUserSession } = this.props;
+          checkUserSession()
 
-      const { setCurrentUser } = this.props;
-      this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth =>{ 
-     if(userAuth){
-      const userRef = await createDocument(userAuth); 
-
-      userRef.onSnapshot(snapShot => {
-        setCurrentUser({
-           id : snapShot.id,
-           ...snapShot.data()
-         })
-      })
-     }
-       else{
-        setCurrentUser(userAuth);
-       } 
-      
-    })
     } 
 
     componentWillUnmount(){
@@ -72,11 +58,38 @@ import React, { Component } from 'react'
    currentuser : selectUser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+// const mapDispatchToProps = dispatch => ({
+//   setCurrentUser: user => dispatch(setCurrentUser(user))
+// });
+
+ const mapDispatchToProps = dispatch => ({
+  checkUserSession: () => dispatch(checkUserSession())
 });
 
- export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps,mapDispatchToProps)(App);
+
+
+
+
+
+
+
+
+
+    // //   const { setCurrentUser } = this.props;
+    // //   this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth =>{ 
+    // //  if(userAuth){
+    // //   const userRef = await createDocument(userAuth); 
+
+    // //   userRef.onSnapshot(snapShot => {
+    // //     setCurrentUser({
+    // //        id : snapShot.id,
+    // //        ...snapShot.data()
+    // //      })
+    // //   })
+    // //  }
+    // //    else{
+    // //     setCurrentUser(userAuth);
+    // //    } 
+      
+    // // })
