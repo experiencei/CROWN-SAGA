@@ -23,6 +23,21 @@ export const emailSignInStart = emailAndPassword => ({
   payload: emailAndPassword
 });
 
+export const signUpwithdisplayname = emailwithDisplayname => ({
+  type: UserActionTypes.SIGN_UP_START,
+  payload: emailwithDisplayname
+});
+
+export const signUpSuccess = ({user , additionalData})=> ({
+  type: UserActionTypes.SIGN_UP_SUCCESS,
+  payload: {user , additionalData}
+});
+
+export const signUpFailure= error => ({
+  type: UserActionTypes.SIGN_UP_FAILURE,
+  payload: error
+});
+
 
 export const checkUserSession = () => ({
   type: UserActionTypes.CHECK_USER_SESSION
